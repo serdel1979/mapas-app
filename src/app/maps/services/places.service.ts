@@ -23,8 +23,8 @@ export class PlacesService {
     return new Promise((resolve,reject)=>{
       navigator.geolocation.getCurrentPosition(
         ({coords})=> {
-            this.userLocation = [coords.longitude, coords.latitude];
-            resolve([coords.longitude, coords.latitude])
+            this.userLocation = [coords.longitude,coords.latitude ];
+            resolve([coords.longitude,coords.latitude ])
         },
         (err)=>{
           alert('No se pudo obtener la geolocalización!!!');
