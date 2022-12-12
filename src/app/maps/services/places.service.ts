@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { PlaceApiClient } from '../api/placesApiClient';
 import { Feature, PlacesResponse } from '../interfaces/places';
 
 @Injectable({
@@ -13,13 +14,13 @@ export class PlacesService {
 
 
   public isLoadingPlaces: boolean = false;
-  public Places: Feature[] = [];
+  public places: Feature[] = [];
 
   get isUserLocationReady(): boolean{
     return !!this.userLocation;
   }
 
-  constructor(private http: HttpClient) {
+  constructor(private http: PlaceApiClient) {
     this.getUserLocation();
   }
 
@@ -43,15 +44,25 @@ export class PlacesService {
 
 
   }
-
-//https://api.mapbox.com/geocoding/v5/mapbox.places/-57.92893035127791,-34.922310856765115.json?country=ar&types=place%2Cpostcode%2Caddress&language=es&limit=1&access_token=pk.eyJ1Ijoic2VyZGVsIiwiYSI6ImNrdDdseW1vejB0cjEycW84cDU4bm1pMHcifQ.xZSU9tC-5DV1HDgOb_lAVA
-  
+ 
   getPlacesByQuery(query: string=''){
-   this.isLoadingPlaces = true;
-   this.http.get<PlacesResponse>(`https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?country=ar&types=place%2Cpostcode%2Caddress&language=es&limit=1&access_token=pk.eyJ1Ijoic2VyZGVsIiwiYSI6ImNrdDdseW1vejB0cjEycW84cDU4bm1pMHcifQ.xZSU9tC-5DV1HDgOb_lAVA`)
+  
+    if( query.length === 0){
+      this.places = [];
+      this.isLoadingPlaces = false;
+      return;
+    }
+    if(!this.userLocation) throw Error('No hay userLocation')
+
+    this.isLoadingPlaces = true;
+    this.http.get<PlacesResponse>(`/${query}.json`,{
+    params: {
+      proximity: this.userLocation?.join(',')
+    }
+   })
               .subscribe(resp=>{
                 this.isLoadingPlaces = false;
-                this.Places = resp.features;
+                this.places = resp.features;
               })
   }
 
