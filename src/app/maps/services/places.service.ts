@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PlaceApiClient } from '../api/placesApiClient';
 import { Feature, PlacesResponse } from '../interfaces/places';
+import { MapService } from './map.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,9 @@ export class PlacesService {
     return !!this.userLocation;
   }
 
-  constructor(private http: PlaceApiClient) {
+  constructor(
+    private mapService: MapService,
+    private http: PlaceApiClient) {
     this.getUserLocation();
   }
 
@@ -63,6 +66,7 @@ export class PlacesService {
               .subscribe(resp=>{
                 this.isLoadingPlaces = false;
                 this.places = resp.features;
+                this.mapService.createMarkersFromPlaces(this.places, this.userLocation!);
               })
   }
 
