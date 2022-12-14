@@ -63,13 +63,15 @@ export class PlacesService {
       proximity: this.userLocation?.join(',')
     }
    })
-              .subscribe(resp=>{
+    .subscribe(resp=>{
                 this.isLoadingPlaces = false;
                 this.places = resp.features;
                 this.mapService.createMarkersFromPlaces(this.places, this.userLocation!);
               })
   }
 
-
+deletePlaces(){
+  this.places = [];
+}
 
 }

@@ -34,6 +34,8 @@ export class SearchResultsComponent {
     console.log(place);
     if( !this.placeSrvice.userLocation) throw Error('No hay localización');
 
+    this.placeSrvice.deletePlaces();
+
     const start = this.placeSrvice.userLocation;
     const end = place.center as [number,number];
     this.mapService.getRouteBetweenPoints(start,end);
