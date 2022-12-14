@@ -113,7 +113,7 @@ export class MapService {
     //limpiar ruta previa
     if(this.map.getLayer('RouteString')){
       this.map.removeLayer('RouteString');
-      this.map.removeLayer('RouteString');
+      this.map.removeSource('RouteString');
     }
 
     this.map.addSource('RouteString', sourceData);
