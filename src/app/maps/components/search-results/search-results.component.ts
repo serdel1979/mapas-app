@@ -30,6 +30,15 @@ export class SearchResultsComponent {
     this.mapService.flyTo([lng,lat])
   }
 
+  getDirections(place: Feature){
+    console.log(place);
+    if( !this.placeSrvice.userLocation) throw Error('No hay localización');
+
+    const start = this.placeSrvice.userLocation;
+    const end = place.center as [number,number];
+    this.mapService.getRouteBetweenPoints(start,end);
+
+  }
   
 
 }

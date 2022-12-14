@@ -15,8 +15,8 @@ export class DirectionsApiClient extends HttpClient{
     }
 
     public override get<T>( url: string){
-
         url = this.baseUrl+url;
+        console.log(url);
         return super.get<T>(url,{
           params:  {
               alternatives: false,
